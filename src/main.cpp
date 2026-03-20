@@ -4,6 +4,7 @@
 const char* ssid = "Mi 10T Lite";
 const char* password = "";
 
+
 Servo motoreServo;
 
 // Sostituisci questo valore con il pin effettivo.
