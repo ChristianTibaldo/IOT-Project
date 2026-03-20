@@ -1,8 +1,35 @@
 #include <Arduino.h>
+#include <ESP32Servo.h>
+
+Servo motoreServo;
+
+// Sostituisci questo valore con il pin effettivo.
+// Puoi usare un intero (es. 18 per D18) o la costante (es. D4 se la board lo mappa).
+const int pinSegnale = 18;
+
 void setup() {
-// write your initialization code here
+    // Alloca il timer hardware 0 per la generazione del segnale PWM
+    ESP32PWM::allocateTimer(0);
+
+    // Imposta la frequenza del segnale PWM a 50Hz, standard per i servomotori
+    motoreServo.setPeriodHertz(50);
+
+    // Associa il servomotore al pin specificato
+    // Imposta la durata degli impulsi: 500us (0°) e 2400us (180°)
+    motoreServo.attach(pinSegnale, 500, 2400);
 }
 
 void loop() {
-// write your code here
+    // Genera il movimento continuo da 0 a 180 gradi
+    for (int angolo = 0; angolo <= 180; angolo += 1) {
+        motoreServo.write(angolo);
+        // Attende 15ms per consentire l'attuazione meccanica della posizione
+        delay(15);
+    }
+
+    // Genera il movimento continuo da 180 a 0 gradi
+    for (int angolo = 180; angolo >= 0; angolo -= 1) {
+        motoreServo.write(angolo);
+        delay(15);
+    }
 }
