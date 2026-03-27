@@ -1,57 +1,146 @@
-#include <Arduino.h>
-#include <ESP32Servo.h>
 #include <WiFi.h>
+#include <PubSubClient.h>
+#include <WiFiClientSecure.h>
+
+#include <esp32-hal.h>
+
+// SERVO
+const int servoPin = 18;
+
+const int pwmChannel = 0;
+const int pwmFreq = 50;
+const int pwmResolution = 16;
+
+uint32_t dutyMin = 1638;
+uint32_t dutyMax = 8192;
+
+// WIFI
 const char* ssid = "Mi 10T Lite";
-const char* password = "";
+const char* wifi_password = "bccd15185a22x";
 
+// MQTT
+const char* mqtt_server = "ffd628ec3a4545039e59114a3e36449f.s1.eu.hivemq.cloud:8883";
+constexpr int mqtt_port = 8883;
+const char* mqtt_user = "IOT-Project";
+const char* mqtt_password = "Ccmt1234";
 
-Servo motoreServo;
-
-// Sostituisci questo valore con il pin effettivo.
-// Puoi usare un intero (es. 18 per D18) o la costante (es. D4 se la board lo mappa).
-const int pinSegnale = 18;
-
-
+WiFiClientSecure wifiClient;
+PubSubClient client(wifiClient);
 
 void setup_wifi() {
-    // Configura il chip Wi-Fi in modalità client
-    WiFi.mode(WIFI_STA);
+    delay(10);
+    Serial.println();
+    Serial.print("Connessione al WiFi");
 
-    // Inizializza il processo di associazione al router
-    WiFi.begin(ssid, password);
+    wifiClient.setInsecure();
+    WiFi.begin(ssid, wifi_password);
 
-    // Loop bloccante che interroga lo stato della connessione ogni 500ms
-    // Il firmware non procede finché l'handshake WPA2 non è completato
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
+        Serial.print(".");
     }
+
+    Serial.println();
+    Serial.println("WiFi connesso");
+}
+
+void reconnect() {
+
+    while (!client.connected()) {
+
+        Serial.print("Connessione MQTT...");
+
+        if (client.connect("esp32-123", mqtt_user, mqtt_password)) {
+
+            Serial.println("connesso");
+
+            client.publish("esp32/status", "ESP32 connessa");
+
+            client.subscribe("esp32/comandi");
+
+        } else {
+
+            Serial.print("Errore connessione, rc=");
+            Serial.print(client.state());
+            Serial.println(" riprovo tra 5 secondi");
+
+            delay(5000);
+        }
+    }
+}
+
+void setAngle(int angle) {
+    // Limita tra 0 e 270
+    angle = constrain(angle, 0, 270);
+
+    uint32_t duty = dutyMin + (dutyMax - dutyMin) * angle / 270;
+    ledcWrite(pwmChannel, duty);
+}
+
+boolean ruota = false;
+
+void callback(char* topic, byte* payload, unsigned int length) {
+
+    // 1. Converti il payload (array di byte) in String leggibile
+    String messaggio = "";
+    for (unsigned int i = 0; i < length; i++) {
+        messaggio += (char)payload[i];
+    }
+
+    // 2. Stampa topic e messaggio
+    Serial.println("Topic:    " + String(topic));
+    Serial.println("Payload:  " + messaggio);
+
+    // 3. Confronta il topic (utile se sei iscritto a più topic)
+    if (String(topic) == "esp32/comandi") {
+
+        // 4. Leggi il contenuto del messaggio
+        if (messaggio == "ruota") {
+            if (ruota)
+                setAngle(180);
+            else
+                setAngle(0);
+            ruota = !ruota;
+            Serial.println("LED acceso");
+        }
+        else {
+            Serial.println("Comando non riconosciuto: " + messaggio);
+        }
+    }
+}
+
+void setupServo() {
+    ledcSetup(pwmChannel, pwmFreq, pwmResolution);
+    ledcAttachPin(servoPin, pwmChannel);
 }
 
 void setup() {
-    // Alloca il timer hardware 0 per la generazione del segnale PWM
-    ESP32PWM::allocateTimer(0);
 
-    // Imposta la frequenza del segnale PWM a 50Hz, standard per i servomotori
-    motoreServo.setPeriodHertz(50);
+    Serial.begin(115200);
 
-    // Associa il servomotore al pin specificato
-    // Imposta la durata degli impulsi: 500us (0°) e 2400us (180°)
-    motoreServo.attach(pinSegnale, 500, 2400);
+    setupServo();
 
     setup_wifi();
+
+    client.setServer(mqtt_server, mqtt_port);
+    client.setCallback(callback);
 }
 
 void loop() {
-    // Genera il movimento continuo da 0 a 180 gradi
-    for (int angolo = 0; angolo <= 180; angolo += 1) {
-        motoreServo.write(angolo);
-        // Attende 15ms per consentire l'attuazione meccanica della posizione
-        delay(15);
+
+    if (!client.connected()) {
+        reconnect();
     }
 
-    // Genera il movimento continuo da 180 a 0 gradi
-    for (int angolo = 180; angolo >= 0; angolo -= 1) {
-        motoreServo.write(angolo);
-        delay(15);
+    client.loop();
+
+    static long lastMsg = 0;
+    long now = millis();
+
+    if (now - lastMsg > 5000) {
+
+        lastMsg = now;
+
+        client.publish("esp32/dati", "ciao dal esp32");
     }
 }
