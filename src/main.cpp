@@ -19,7 +19,7 @@ const char* ssid = "Mi 10T Lite";
 const char* wifi_password = "bccd15185a22x";
 
 // MQTT
-const char* mqtt_server = "ffd628ec3a4545039e59114a3e36449f.s1.eu.hivemq.cloud:8883";
+const char* mqtt_server = "7b5efaa28c754223b5c5ae9bce2d6384.s1.eu.hivemq.cloud";
 constexpr int mqtt_port = 8883;
 const char* mqtt_user = "IOT-Project";
 const char* mqtt_password = "Ccmt1234";
@@ -136,6 +136,16 @@ void loop() {
 
     static long lastMsg = 0;
     long now = millis();
+
+    // rotazione servo
+    for (int angolo = 0; angolo < 270; angolo++) {
+        setAngle(angolo);
+        delay(15);
+    }
+    for (int angolo = 270; angolo >= 0; angolo--) {
+        setAngle(angolo);
+        delay(15);
+    }
 
     if (now - lastMsg > 5000) {
 
