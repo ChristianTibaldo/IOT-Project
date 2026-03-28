@@ -1,0 +1,18 @@
+sto facendo un progetto IoT a gruppo riguardo un "distributore di medicine", in poche parole c'è un esp32 collegato ad un servo motore. c'è una scatola rotonda divisa in parti ed il servo motore fa girare il coperchio rivelando così solo una delle varie parti. queste parti sono divise in base all'ora in cui va presa la medicina contenuta. inoltre c'è anche una web app sviluppata con laravel con una dashboard per vedere dei dati che ancora non sono stati decisi dalla parte del medico curante, ed un app android sempre per la visualizzazione dei dati dalla parte del paziente. c'è anche un database sviluppato con mariadb per contenere dati non ancora decisi. L'esp comunica con le altre robe usando MQTT e noi usiamo HiveMQ.
+per questo progetto dobbiamo usare la metodologia SCRUM e quindi ho bisogno di creare delle epic e delle issue da inserire nel project di github.
+Infine ci stanno anche vari sensori che possiamo utilizare, se abbiamo tempo, tipo quello di temperature, luce, distanza, e poi  abbiamo anche un piccolo display da poter collegare direttamente all' esp ed un buzzer per allertare che si è aperta un'altra parte.
+noi dobbiamo fare in modo che tramite web app/ app android possiamo vedere le notifiche riguardo l'apertura di una nuova parte e dalla web app la possibilità di ruotare forzatamente ad una certa ora il servo.
+dico ora perchè ogni parte della scatola sara divisa per ora in cui va presa la medicina, e l'esp, in base all'ora attuale, fa girare di un tot di gradi il servo in modo da scoprire solo la parte interessata.
+Dato che il servo ha una rotazione massima di 270 gradi la scatola sara divisa in 2 parti principali:
+la prima di 90 gradi che non sarà mai visibile in cui ci mettiamo roba hardware
+la seconda da 270 gradi che sarà divisa nelle varie sottoparti in base alle ore:
+come ti ho detto prima creami delle epic e delle issue riguardo tutto, dall'avvio del progetto fino alla fine. Le epic dividile in modo inteligente in modo tale che non faccia "conflitto" o che vada a sfociare in un'altra epic
+
+
+altre aggiunte:
+sensore di tempertura ed umidità che prende i dati e li passa sia sulla dashboard del medico sia sull'app android del paziente
+sensore di movimento che appena il coperchio smette di muoversi fa partire la notifica al paziente
+piccolo diplay che stampa una piccola frase (da scegliere)
+dalla dashboard il medico può inviare notifiche al paziente in caso di problematiche rilevate dai sensori(temperatura, umidità,ecc)
+la web app servira per visualizzare si la dashboard del medico sia quella del paziente. nella dashboard del paziente visualiziamo le stesse cose dell'app android
+quindi dobbiamo gestire i diversi tipi di utenti nella parte web
