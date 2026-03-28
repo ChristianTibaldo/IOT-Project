@@ -11,8 +11,8 @@ PER AVVIARE:
 - creare il cluster HiveMQ e aggiungerci le credenziali corrette
 - impostare mqtt_server con quello del cluster
 
-PER COLLEGAMENTO SERVO MOTORE AD ESP32:
-Cavo servo -> Pin esp32
+
+PER COLLEGAMENTO SERVO MOTORE AD ESP32 (Cavo servo -> Pin esp32):
 -Rosso -> VIN/VCC
 -Nero -> GND
 -Giallo -> PIN esp32 a scelta (18)
