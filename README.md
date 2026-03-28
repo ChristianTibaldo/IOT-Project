@@ -10,3 +10,9 @@ PER AVVIARE:
 - impostare upload_port con la porta a cui è collegato l'esp
 - creare il cluster HiveMQ e aggiungerci le credenziali corrette
 - impostare mqtt_server con quello del cluster
+
+
+PER COLLEGAMENTO SERVO MOTORE AD ESP32 (Cavo servo -> Pin esp32):
+- Rosso -> VIN/VCC
+- Nero -> GND
+- Giallo -> PIN esp32 a scelta (in questo momento stiamo usando il pin 18)
