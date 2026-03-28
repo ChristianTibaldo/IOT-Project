@@ -13,6 +13,6 @@ PER AVVIARE:
 
 
 PER COLLEGAMENTO SERVO MOTORE AD ESP32 (Cavo servo -> Pin esp32):
--Rosso -> VIN/VCC
--Nero -> GND
--Giallo -> PIN esp32 a scelta (18)
+- Rosso -> VIN/VCC
+- Nero -> GND
+- Giallo -> PIN esp32 a scelta (in questo momento stiamo usando il pin 18)
