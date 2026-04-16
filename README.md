@@ -16,3 +16,8 @@ PER COLLEGAMENTO SERVO MOTORE AD ESP32 (Cavo servo -> Pin esp32):
 - Rosso -> VIN/VCC
 - Nero -> GND
 - Giallo -> PIN esp32 a scelta (in questo momento stiamo usando il pin 18)
+
+
+L'esp ha 2 pin per alimentazione. VIN 5V    3V3 3V
+servo motore e pir muovimento usano 5V
+sensore umidità/temperatura usa 3V
