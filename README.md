@@ -6,9 +6,9 @@
 
 ![Descrizione immagine](freccia.jpg)
 
-![Descrizione immagine](Tiba MezzoPrime.jpg)
+![Descrizione immagine](Tiba MezzoPrime.png)
 
-![Descrizione immagine](Tiba Prime.jpg)
+![Descrizione immagine](Tiba Prime.png)
 
 
 
