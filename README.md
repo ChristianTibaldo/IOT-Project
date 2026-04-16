@@ -4,6 +4,14 @@
  
 ![Descrizione immagine](cortisol.webp)
 
+![Descrizione immagine](freccia.jpg)
+
+![Descrizione immagine](Tiba MezzoPrime.jpg)
+
+![Descrizione immagine](Tiba Prime.jpg)
+
+
+
 PER AVVIARE:
 - impostare ssid e wifi_password con quelli del proprio hotspot
 - assicurarsi che l'hotspot giri a 2.4 GHz
