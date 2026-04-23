@@ -1,16 +1,3 @@
-![Descrizione immagine](tiba.jpeg) 
-
-![Descrizione immagine](freccia.jpg)
- 
-![Descrizione immagine](cortisol.webp)
-
-![Descrizione immagine](freccia.jpg)
-
-![Descrizione immagine](Tiba%20MezzoPrime.png)
-
-![Descrizione immagine](Tiba%20Prime.png)
-
-
 
 PER AVVIARE:
 - impostare ssid e wifi_password con quelli del proprio hotspot
